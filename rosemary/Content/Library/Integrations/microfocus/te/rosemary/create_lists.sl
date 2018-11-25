@@ -2,20 +2,12 @@ namespace: microfocus.te.rosemary
 flow:
   name: create_lists
   inputs:
-    - host: "${get_sp('host')}"
-    - user: "${get_sp('user')}"
-    - password: "${get_sp('password')}"
   workflow:
     - find_root_1:
         do:
-          io.cloudslang.vmware.vcenter.util.advanced_search:
-            - host: "${get('host', get_sp('host'))}"
-            - user: '${user}'
-            - password: '${password}'
+          microfocus.te.rosemary.util.advanced_search:
             - props_type: ResourcePool
             - props_pathset: 'name,parent'
-            - trust_all_roots: 'true'
-            - x_509_hostname_verifier: allow_all
         publish:
           - all_json: '${return_result}'
         navigate:
@@ -24,14 +16,9 @@ flow:
           - FAILURE: on_failure
     - find_root:
         do:
-          io.cloudslang.vmware.vcenter.util.advanced_search:
-            - host: "${get('host', get_sp('host'))}"
-            - user: '${user}'
-            - password: '${password}'
+          microfocus.te.rosemary.util.advanced_search:
             - props_type: Folder
             - props_pathset: 'name,childEntity'
-            - trust_all_roots: 'true'
-            - x_509_hostname_verifier: allow_all
         publish:
           - all_json: '${return_result}'
         navigate:
@@ -55,9 +42,6 @@ flow:
           for: "string in datacenters_string.split('},{')"
           do:
             microfocus.te.rosemary.subflows.get_datacenter_id:
-              - host: '${host}'
-              - user: '${user}'
-              - password: '${password}'
               - id: '${string[string.find("_value:")+7:string.find(",")]}'
               - json: '${json_collection}'
           break:

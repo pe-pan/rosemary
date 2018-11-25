@@ -1,4 +1,4 @@
-namespace: Integrations.microfocus.te.rosemary.util
+namespace: microfocus.te.rosemary.util
 flow:
   name: advanced_search
   inputs:

@@ -2,24 +2,16 @@ namespace: microfocus.te.rosemary.subflows
 flow:
   name: get_datacenter_id
   inputs:
-    - host: "${get_sp('host')}"
-    - user: "${get_sp('user')}"
-    - password: "${get_sp('password')}"
     - id
     - json
   workflow:
     - advanced_search_2:
         do:
-          io.cloudslang.vmware.vcenter.util.advanced_search:
-            - host
-            - user
-            - password
+          microfocus.te.rosemary.util.advanced_search:
             - props_type: Datacenter
             - props_pathset: name
             - props_root_obj_type: Datacenter
             - props_root_obj: '${id}'
-            - trust_all_roots: 'true'
-            - x_509_hostname_verifier: allow_all
         publish:
           - datacenter_json: '${return_result}'
         navigate:

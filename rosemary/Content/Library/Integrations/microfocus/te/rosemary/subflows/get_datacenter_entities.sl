@@ -4,9 +4,6 @@ flow:
   inputs:
     - json_collection
     - name
-    - host: "${get_sp('host')}"
-    - user
-    - password
     - filter_on
   workflow:
     - get_id:
@@ -21,16 +18,11 @@ flow:
           - FAILURE: on_failure
     - advanced_search:
         do:
-          io.cloudslang.vmware.vcenter.util.advanced_search:
-            - host
-            - user
-            - password
+          microfocus.te.rosemary.util.advanced_search:
             - props_type: '${filter_on}'
             - props_pathset: 'name,parent'
             - props_root_obj_type: Datacenter
             - props_root_obj: '${id}'
-            - trust_all_roots: 'true'
-            - x_509_hostname_verifier: allow_all
         publish:
           - children: '${return_result}'
         navigate:
