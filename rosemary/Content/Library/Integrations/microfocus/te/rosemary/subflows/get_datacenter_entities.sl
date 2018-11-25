@@ -27,7 +27,6 @@ flow:
           - children: '${return_result}'
         navigate:
           - SUCCESS: SUCCESS
-          - NO_MORE: SUCCESS
           - FAILURE: on_failure
   outputs:
     - children: '${children}'
@@ -47,9 +46,6 @@ extensions:
           322d72b6-2c65-3309-1299-cad6bd6c0013:
             targetId: 0dd1bf8c-36d8-21ef-c6fb-fd2c413df340
             port: SUCCESS
-          03ba98b2-774b-a0b4-c354-c7d4825e729b:
-            targetId: 0dd1bf8c-36d8-21ef-c6fb-fd2c413df340
-            port: NO_MORE
     results:
       SUCCESS:
         0dd1bf8c-36d8-21ef-c6fb-fd2c413df340:

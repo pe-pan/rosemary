@@ -1,7 +1,7 @@
 namespace: microfocus.te.rosemary
 flow:
   name: create_lists
-  inputs:
+  inputs: null
   workflow:
     - find_root_1:
         do:
@@ -11,9 +11,8 @@ flow:
         publish:
           - all_json: '${return_result}'
         navigate:
-          - SUCCESS: find_root
-          - NO_MORE: find_root
           - FAILURE: on_failure
+          - SUCCESS: find_root
     - find_root:
         do:
           microfocus.te.rosemary.util.advanced_search:
@@ -22,9 +21,8 @@ flow:
         publish:
           - all_json: '${return_result}'
         navigate:
-          - SUCCESS: get_datacenter_ids
-          - NO_MORE: get_datacenter_ids
           - FAILURE: on_failure
+          - SUCCESS: get_datacenter_ids
     - get_datacenter_ids:
         do:
           io.cloudslang.base.json.json_path_query:
@@ -79,15 +77,18 @@ flow:
 extensions:
   graph:
     steps:
-      get_datacenter_names:
-        x: 530
-        y: 94
+      find_root_1:
+        x: 93
+        y: 258
       find_root:
         x: 125
         y: 92
       get_datacenter_ids:
         x: 345
         y: 83
+      get_datacenter_names:
+        x: 530
+        y: 94
       get_production_folders:
         x: 204
         y: 270
@@ -98,9 +99,6 @@ extensions:
           01bb166a-1832-0a26-154b-16c978d389dd:
             targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
             port: SUCCESS
-      find_root_1:
-        x: 93
-        y: 258
     results:
       SUCCESS:
         2f2613cf-d594-7e80-95a1-a868e77ab0b6:

@@ -16,7 +16,6 @@ flow:
           - datacenter_json: '${return_result}'
         navigate:
           - SUCCESS: json_path_query_2
-          - NO_MORE: json_path_query_2
           - FAILURE: on_failure
     - json_path_query_2:
         do:
@@ -50,11 +49,6 @@ extensions:
       advanced_search_2:
         x: 93
         y: 84
-        navigate:
-          c50a7a54-89c6-3f0a-2aa8-0ef70b921853:
-            vertices: []
-            targetId: json_path_query_2
-            port: NO_MORE
       json_path_query_2:
         x: 89
         y: 307
