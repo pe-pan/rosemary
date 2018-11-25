@@ -1,18 +1,19 @@
 namespace: microfocus.te.rosemary
 flow:
   name: create_lists
-  inputs: null
   workflow:
-    - find_root_1:
+    - get_all_datacenters:
         do:
           microfocus.te.rosemary.util.advanced_search:
-            - props_type: ResourcePool
+            - props_type: Datacenter
             - props_pathset: 'name,parent'
+            - props_root_obj_type: null
+            - props_root_obj: null
         publish:
-          - all_json: '${return_result}'
+          - datacenters: '${return_result}'
         navigate:
           - FAILURE: on_failure
-          - SUCCESS: find_root
+          - SUCCESS: get_prod_id
     - find_root:
         do:
           microfocus.te.rosemary.util.advanced_search:
@@ -71,36 +72,188 @@ flow:
         navigate:
           - FAILURE: on_failure
           - SUCCESS: SUCCESS
+    - get_prod_id:
+        do:
+          Integrations.microfocus.te.rosemary.util.get_id:
+            - json_object: '${datacenters}'
+            - name: "${get_sp('folder_production')}"
+        publish:
+          - prod_id: '${id}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_prod_folders
+    - get_lib_id:
+        do:
+          Integrations.microfocus.te.rosemary.util.get_id:
+            - json_object: '${datacenters}'
+            - name: "${get_sp('folder_library')}"
+        publish:
+          - lib_id: '${id}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_lib_folders
+    - get_dev_id:
+        do:
+          Integrations.microfocus.te.rosemary.util.get_id:
+            - json_object: '${datacenters}'
+            - name: "${get_sp('folder_development')}"
+        publish:
+          - dev_id: '${id}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: advanced_search
+    - get_prod_folders:
+        do:
+          microfocus.te.rosemary.util.advanced_search:
+            - props_type: Folder
+            - props_pathset: 'name,parent'
+            - props_root_obj_type: Datacenter
+            - props_root_obj: '${prod_id}'
+        publish:
+          - prod_folders: '${return_result}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_classes_id
+    - get_classes_id:
+        do:
+          Integrations.microfocus.te.rosemary.util.get_id:
+            - json_object: '${prod_folders}'
+            - name: Classes
+        publish:
+          - classes_id: '${id}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_classes
+    - get_classes:
+        do:
+          Integrations.microfocus.te.rosemary.util.get_children:
+            - json_object: '${prod_folders}'
+            - parent_id: '${classes_id}'
+            - parent_type: Folder
+        publish:
+          - classes: '${children}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_lib_id
+    - get_lib_folders:
+        do:
+          microfocus.te.rosemary.util.advanced_search:
+            - props_type: ResourcePool
+            - props_pathset: 'name,parent'
+            - props_root_obj_type: Datacenter
+            - props_root_obj: '${lib_id}'
+        publish:
+          - lib_folders: '${return_result}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_resources_id
+    - get_resources_id:
+        do:
+          Integrations.microfocus.te.rosemary.util.get_id:
+            - json_object: '${lib_folders}'
+            - name: Resources
+        publish:
+          - resources_id: '${id}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_libraries
+    - get_libraries:
+        do:
+          Integrations.microfocus.te.rosemary.util.get_children:
+            - json_object: '${lib_folders}'
+            - parent_id: '${resources_id}'
+            - parent_type: ResourcePool
+        publish:
+          - libraries: '${children}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_dev_id
+    - advanced_search:
+        do:
+          microfocus.te.rosemary.util.advanced_search:
+            - props_type: ResourcePool
+            - props_pathset: 'name,parent'
+            - props_root_obj_type: Datacenter
+            - props_root_obj: '${dev_id}'
+        publish:
+          - dev_folders: '${return_result}'
+        navigate:
+          - FAILURE: find_root
+          - SUCCESS: SUCCESS
+  outputs:
+    - classes: '${classes}'
+    - libraries: '${libraries}'
+    - dev_folders: '${dev_folders}'
   results:
     - FAILURE
     - SUCCESS
 extensions:
   graph:
     steps:
-      find_root_1:
-        x: 93
-        y: 258
-      find_root:
-        x: 125
-        y: 92
       get_datacenter_ids:
-        x: 345
-        y: 83
-      get_datacenter_names:
-        x: 530
-        y: 94
+        x: 535
+        y: 76
+      get_lib_folders:
+        x: 151
+        y: 298
+      advanced_search:
+        x: 153
+        y: 483
+        navigate:
+          4156a8d9-6c48-cd37-ebad-1c0a0be5dcb4:
+            targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
+            port: SUCCESS
+          acc89751-31b0-ba41-0d5a-637f78601fcc:
+            vertices:
+              - x: 307
+                y: 349
+            targetId: find_root
+            port: FAILURE
+      get_prod_folders:
+        x: 115
+        y: 128
+      find_root:
+        x: 430
+        y: 50
       get_production_folders:
-        x: 204
-        y: 270
+        x: 560
+        y: 218
+      get_all_datacenters:
+        x: 140
+        y: 11
+      get_dev_id:
+        x: 25
+        y: 478
+      get_libraries:
+        x: 368
+        y: 297
+      get_datacenter_names:
+        x: 716
+        y: 96
       get_library_folders:
-        x: 393
-        y: 320
+        x: 507
+        y: 562
         navigate:
           01bb166a-1832-0a26-154b-16c978d389dd:
             targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
             port: SUCCESS
+      get_prod_id:
+        x: 8
+        y: 128
+      get_classes:
+        x: 358
+        y: 142
+      get_classes_id:
+        x: 240
+        y: 134
+      get_lib_id:
+        x: 11
+        y: 291
+      get_resources_id:
+        x: 251
+        y: 302
     results:
       SUCCESS:
         2f2613cf-d594-7e80-95a1-a868e77ab0b6:
-          x: 704
-          y: 299
+          x: 385
+          y: 514
