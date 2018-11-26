@@ -184,7 +184,7 @@ flow:
         do:
           io.cloudslang.base.json.json_path_query:
             - json_object: '${dev_folders}'
-            - json_path: "$[?(@.parent =~ /ResourcePool/i)][\\'morValue\\',\\'name\\']"
+            - json_path: "$[?(@.parent =~ /.*ResourcePool}/i)]['name','morValue']"
         publish:
           - envrironments: '${return_result}'
         navigate:
@@ -193,7 +193,6 @@ flow:
   outputs:
     - classes: '${classes}'
     - libraries: '${libraries}'
-    - dev_folders: '${dev_folders}'
     - environments: '${envrironments}'
   results:
     - FAILURE
@@ -208,8 +207,8 @@ extensions:
         x: 151
         y: 298
       get_prod_folders:
-        x: 115
-        y: 128
+        x: 114
+        y: 130
       find_root:
         x: 430
         y: 50
@@ -218,7 +217,7 @@ extensions:
         y: 218
       get_environments:
         x: 276
-        y: 476
+        y: 477
         navigate:
           dbc698e5-277c-9c23-5023-ba5de5380818:
             targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
@@ -243,6 +242,8 @@ extensions:
             vertices:
               - x: 307
                 y: 349
+              - x: 408
+                y: 195
             targetId: find_root
             port: FAILURE
       get_library_folders:
@@ -256,7 +257,7 @@ extensions:
         x: 8
         y: 128
       get_classes:
-        x: 358
+        x: 359
         y: 142
       get_classes_id:
         x: 240
