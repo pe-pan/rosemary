@@ -101,7 +101,7 @@ flow:
           - dev_id: '${id}'
         navigate:
           - FAILURE: on_failure
-          - SUCCESS: advanced_search
+          - SUCCESS: get_dev_folders
     - get_prod_folders:
         do:
           microfocus.te.rosemary.util.advanced_search:
@@ -168,7 +168,7 @@ flow:
         navigate:
           - FAILURE: on_failure
           - SUCCESS: get_dev_id
-    - advanced_search:
+    - get_dev_folders:
         do:
           microfocus.te.rosemary.util.advanced_search:
             - props_type: ResourcePool
@@ -179,11 +179,22 @@ flow:
           - dev_folders: '${return_result}'
         navigate:
           - FAILURE: find_root
+          - SUCCESS: get_environments
+    - get_environments:
+        do:
+          io.cloudslang.base.json.json_path_query:
+            - json_object: '${dev_folders}'
+            - json_path: "$[?(@.parent =~ /ResourcePool/i)][\\'morValue\\',\\'name\\']"
+        publish:
+          - envrironments: '${return_result}'
+        navigate:
           - SUCCESS: SUCCESS
+          - FAILURE: on_failure
   outputs:
     - classes: '${classes}'
     - libraries: '${libraries}'
     - dev_folders: '${dev_folders}'
+    - environments: '${envrironments}'
   results:
     - FAILURE
     - SUCCESS
@@ -196,19 +207,6 @@ extensions:
       get_lib_folders:
         x: 151
         y: 298
-      advanced_search:
-        x: 153
-        y: 483
-        navigate:
-          4156a8d9-6c48-cd37-ebad-1c0a0be5dcb4:
-            targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
-            port: SUCCESS
-          acc89751-31b0-ba41-0d5a-637f78601fcc:
-            vertices:
-              - x: 307
-                y: 349
-            targetId: find_root
-            port: FAILURE
       get_prod_folders:
         x: 115
         y: 128
@@ -218,6 +216,13 @@ extensions:
       get_production_folders:
         x: 560
         y: 218
+      get_environments:
+        x: 276
+        y: 476
+        navigate:
+          dbc698e5-277c-9c23-5023-ba5de5380818:
+            targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
+            port: SUCCESS
       get_all_datacenters:
         x: 140
         y: 11
@@ -230,6 +235,16 @@ extensions:
       get_datacenter_names:
         x: 716
         y: 96
+      get_dev_folders:
+        x: 153
+        y: 483
+        navigate:
+          acc89751-31b0-ba41-0d5a-637f78601fcc:
+            vertices:
+              - x: 307
+                y: 349
+            targetId: find_root
+            port: FAILURE
       get_library_folders:
         x: 507
         y: 562
