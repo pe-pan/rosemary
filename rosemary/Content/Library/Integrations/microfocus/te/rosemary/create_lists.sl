@@ -14,64 +14,6 @@ flow:
         navigate:
           - FAILURE: on_failure
           - SUCCESS: get_prod_id
-    - find_root:
-        do:
-          microfocus.te.rosemary.util.advanced_search:
-            - props_type: Folder
-            - props_pathset: 'name,childEntity'
-        publish:
-          - all_json: '${return_result}'
-        navigate:
-          - FAILURE: on_failure
-          - SUCCESS: get_datacenter_ids
-    - get_datacenter_ids:
-        do:
-          io.cloudslang.base.json.json_path_query:
-            - json_object: '${all_json}'
-            - json_path: "$.[?(@.name=='Datacenters')].childEntity"
-        publish:
-          - datacenters_string: '${return_result[2:len(return_result)-2]}'
-          - items: "${str(len(return_result[2:len(return_result)-2].split('},{')))}"
-          - json_collection: '{}'
-        navigate:
-          - SUCCESS: get_datacenter_names
-          - FAILURE: on_failure
-    - get_datacenter_names:
-        loop:
-          for: "string in datacenters_string.split('},{')"
-          do:
-            microfocus.te.rosemary.subflows.get_datacenter_id:
-              - id: '${string[string.find("_value:")+7:string.find(",")]}'
-              - json: '${json_collection}'
-          break:
-            - FAILURE
-          publish:
-            - json_collection: '${json_object}'
-        navigate:
-          - FAILURE: on_failure
-          - SUCCESS: get_production_folders
-    - get_production_folders:
-        do:
-          microfocus.te.rosemary.subflows.get_datacenter_entities:
-            - json_collection: '${json_collection}'
-            - name: "${get_sp('folder_production')}"
-            - user: '${user}'
-            - password: '${password}'
-            - filter_on: Folder
-        navigate:
-          - FAILURE: on_failure
-          - SUCCESS: get_library_folders
-    - get_library_folders:
-        do:
-          microfocus.te.rosemary.subflows.get_datacenter_entities:
-            - json_collection: '${json_collection}'
-            - name: "${get_sp('folder_library')}"
-            - user: '${user}'
-            - password: '${password}'
-            - filter_on: ResourcePool
-        navigate:
-          - FAILURE: on_failure
-          - SUCCESS: SUCCESS
     - get_prod_id:
         do:
           Integrations.microfocus.te.rosemary.util.get_id:
@@ -134,7 +76,7 @@ flow:
           - classes: '${children}'
         navigate:
           - FAILURE: on_failure
-          - SUCCESS: get_lib_id
+          - SUCCESS: write_file
     - get_lib_folders:
         do:
           microfocus.te.rosemary.util.advanced_search:
@@ -167,7 +109,7 @@ flow:
           - libraries: '${children}'
         navigate:
           - FAILURE: on_failure
-          - SUCCESS: get_dev_id
+          - SUCCESS: write_file_1
     - get_dev_folders:
         do:
           microfocus.te.rosemary.util.advanced_search:
@@ -178,7 +120,7 @@ flow:
         publish:
           - dev_folders: '${return_result}'
         navigate:
-          - FAILURE: find_root
+          - FAILURE: on_failure
           - SUCCESS: get_environments
     - get_environments:
         do:
@@ -188,8 +130,98 @@ flow:
         publish:
           - envrironments: '${return_result}'
         navigate:
-          - SUCCESS: SUCCESS
+          - SUCCESS: write_file_2
           - FAILURE: on_failure
+    - write_file:
+        do:
+          Integrations.microfocus.te.rosemary.write_file:
+            - filename: classes.json
+            - json: '${classes}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: json_to_list
+    - json_to_list:
+        do:
+          Integrations.microfocus.te.rosemary.json_to_list:
+            - json: '${classes}'
+            - property: morValue
+        publish:
+          - class_ids: '${list}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: write_pools
+    - write_file_1:
+        do:
+          Integrations.microfocus.te.rosemary.write_file:
+            - filename: libraries.json
+            - json: '${libraries}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: json_to_list_1
+    - json_to_list_1:
+        do:
+          Integrations.microfocus.te.rosemary.json_to_list:
+            - json: '${libraries}'
+            - property: morValue
+        publish:
+          - library_ids: '${list}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: write_vms_1
+    - write_vms_1:
+        loop:
+          for: library_id in library_ids
+          do:
+            Integrations.microfocus.te.rosemary.write_vms:
+              - parent_id: '${library_id[1:len(library_id)-1]}'
+              - parent_type: ResourcePool
+          break:
+            - FAILURE
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_dev_id
+    - write_pools:
+        loop:
+          for: class_id in class_ids
+          do:
+            Integrations.microfocus.te.rosemary.write_pools:
+              - parent_id: '${class_id[1:len(class_id)-1]}'
+              - parent_type: Folder
+          break:
+            - FAILURE
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: get_lib_id
+    - write_vms_1_1:
+        loop:
+          for: environment_id in environment_ids
+          do:
+            Integrations.microfocus.te.rosemary.write_vms:
+              - parent_id: '${environment_id[1:len(environment_id)-1]}'
+              - parent_type: ResourcePool
+          break:
+            - FAILURE
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: SUCCESS
+    - write_file_2:
+        do:
+          Integrations.microfocus.te.rosemary.write_file:
+            - filename: environments.json
+            - json: '${envrironments}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: json_to_list_2
+    - json_to_list_2:
+        do:
+          Integrations.microfocus.te.rosemary.json_to_list:
+            - json: '${envrironments}'
+            - property: morValue
+        publish:
+          - environment_ids: '${list}'
+        navigate:
+          - FAILURE: on_failure
+          - SUCCESS: write_vms_1_1
   outputs:
     - classes: '${classes}'
     - libraries: '${libraries}'
@@ -200,68 +232,67 @@ flow:
 extensions:
   graph:
     steps:
-      get_datacenter_ids:
-        x: 535
-        y: 76
+      write_vms_1_1:
+        x: 676
+        y: 490
+        navigate:
+          5adae391-aa74-da53-9f67-83ac5ddc7429:
+            targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
+            port: SUCCESS
       get_lib_folders:
         x: 151
         y: 298
       get_prod_folders:
         x: 114
         y: 130
-      find_root:
-        x: 430
-        y: 50
-      get_production_folders:
-        x: 560
-        y: 218
       get_environments:
-        x: 276
+        x: 275
         y: 477
-        navigate:
-          dbc698e5-277c-9c23-5023-ba5de5380818:
-            targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
-            port: SUCCESS
+      json_to_list:
+        x: 608
+        y: 151
       get_all_datacenters:
         x: 140
         y: 11
+      write_vms_1:
+        x: 744
+        y: 320
       get_dev_id:
         x: 25
-        y: 478
+        y: 446
+      write_file_1:
+        x: 500
+        y: 328
+      write_file_2:
+        x: 402
+        y: 485
       get_libraries:
         x: 368
         y: 297
-      get_datacenter_names:
-        x: 716
-        y: 96
       get_dev_folders:
         x: 153
         y: 483
-        navigate:
-          acc89751-31b0-ba41-0d5a-637f78601fcc:
-            vertices:
-              - x: 307
-                y: 349
-              - x: 408
-                y: 195
-            targetId: find_root
-            port: FAILURE
-      get_library_folders:
-        x: 507
-        y: 562
-        navigate:
-          01bb166a-1832-0a26-154b-16c978d389dd:
-            targetId: 2f2613cf-d594-7e80-95a1-a868e77ab0b6
-            port: SUCCESS
+      write_pools:
+        x: 736
+        y: 152
       get_prod_id:
         x: 8
         y: 128
+      write_file:
+        x: 487
+        y: 154
       get_classes:
         x: 359
         y: 142
       get_classes_id:
         x: 240
-        y: 134
+        y: 135
+      json_to_list_1:
+        x: 626
+        y: 341
+      json_to_list_2:
+        x: 539
+        y: 491
       get_lib_id:
         x: 11
         y: 291
@@ -271,5 +302,5 @@ extensions:
     results:
       SUCCESS:
         2f2613cf-d594-7e80-95a1-a868e77ab0b6:
-          x: 385
-          y: 514
+          x: 764
+          y: 626
