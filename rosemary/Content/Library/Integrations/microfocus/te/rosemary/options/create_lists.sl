@@ -134,7 +134,7 @@ flow:
           - FAILURE: on_failure
     - write_file:
         do:
-          microfocus.te.rosemary.options.write_file:
+          microfocus.te.rosemary.options.subflows.write_file:
             - filename: classes.json
             - json: '${classes}'
         navigate:
@@ -152,7 +152,7 @@ flow:
           - SUCCESS: write_pools
     - write_file_1:
         do:
-          microfocus.te.rosemary.options.write_file:
+          microfocus.te.rosemary.options.subflows.write_file:
             - filename: libraries.json
             - json: '${libraries}'
         navigate:
@@ -172,7 +172,7 @@ flow:
         loop:
           for: library_id in library_ids
           do:
-            microfocus.te.rosemary.options.write_vms:
+            microfocus.te.rosemary.options.subflows.write_vms:
               - parent_id: '${library_id[1:len(library_id)-1]}'
               - parent_type: ResourcePool
           break:
@@ -184,7 +184,7 @@ flow:
         loop:
           for: class_id in class_ids
           do:
-            microfocus.te.rosemary.options.write_pools:
+            microfocus.te.rosemary.options.subflows.write_pools:
               - parent_id: '${class_id[1:len(class_id)-1]}'
               - parent_type: Folder
           break:
@@ -196,7 +196,7 @@ flow:
         loop:
           for: environment_id in environment_ids
           do:
-            microfocus.te.rosemary.options.write_vms:
+            microfocus.te.rosemary.options.subflows.write_vms:
               - parent_id: '${environment_id[1:len(environment_id)-1]}'
               - parent_type: ResourcePool
           break:
@@ -206,7 +206,7 @@ flow:
           - SUCCESS: SUCCESS
     - write_file_2:
         do:
-          microfocus.te.rosemary.options.write_file:
+          microfocus.te.rosemary.options.subflows.write_file:
             - filename: environments.json
             - json: '${envrironments}'
         navigate:
