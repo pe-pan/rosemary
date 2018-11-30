@@ -7,7 +7,7 @@ flow:
   workflow:
     - list_pools:
         do:
-          microfocus.te.rosemary.options.list_pools.subflows:
+          microfocus.te.rosemary.options.subflows.list_pools:
             - parent_id: '${parent_id}'
             - parent_type: '${parent_type}'
         publish:
@@ -17,7 +17,7 @@ flow:
           - FAILURE: on_failure
     - write_file:
         do:
-          microfocus.te.rosemary.options.write_file.subflows:
+          microfocus.te.rosemary.options.subflows.write_file:
             - filename: '${parent_id}'
             - json: '${pools}'
         publish: []
@@ -38,7 +38,7 @@ flow:
         loop:
           for: pool_id in pool_ids
           do:
-            microfocus.te.rosemary.options.write_vms.subflows:
+            microfocus.te.rosemary.options.subflows.write_vms:
               - parent_id: '${pool_id[1:len(pool_id)-1]}'
               - parent_type: ResourcePool
           break:
