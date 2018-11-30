@@ -1,4 +1,4 @@
-namespace: Integrations.microfocus.te.rosemary
+namespace: microfocus.te.rosemary.options.subflows
 flow:
   name: list_pools
   inputs:
@@ -9,7 +9,7 @@ flow:
   workflow:
     - advanced_search:
         do:
-          microfocus.te.rosemary.util.advanced_search:
+          microfocus.te.rosemary.options.util.advanced_search:
             - props_type: ResourcePool
             - props_pathset: 'name,parent'
             - props_root_obj_type: '${parent_type}'

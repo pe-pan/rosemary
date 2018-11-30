@@ -1,4 +1,4 @@
-namespace: Integrations.microfocus.te.rosemary
+namespace: microfocus.te.rosemary.options.subflows
 flow:
   name: write_file
   inputs:

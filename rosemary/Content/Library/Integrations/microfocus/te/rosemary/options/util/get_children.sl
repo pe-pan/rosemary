@@ -1,4 +1,4 @@
-namespace: Integrations.microfocus.te.rosemary.util
+namespace: microfocus.te.rosemary.options.util
 flow:
   name: get_children
   inputs:

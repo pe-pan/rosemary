@@ -1,10 +1,10 @@
-namespace: microfocus.te.rosemary
+namespace: microfocus.te.rosemary.options
 flow:
   name: create_lists
   workflow:
     - get_all_datacenters:
         do:
-          microfocus.te.rosemary.util.advanced_search:
+          microfocus.te.rosemary.options.util.advanced_search:
             - props_type: Datacenter
             - props_pathset: 'name,parent'
             - props_root_obj_type: null
@@ -16,7 +16,7 @@ flow:
           - SUCCESS: get_prod_id
     - get_prod_id:
         do:
-          Integrations.microfocus.te.rosemary.util.get_id:
+          microfocus.te.rosemary.options.util.get_id:
             - json_object: '${datacenters}'
             - name: "${get_sp('folder_production')}"
         publish:
@@ -26,7 +26,7 @@ flow:
           - SUCCESS: get_prod_folders
     - get_lib_id:
         do:
-          Integrations.microfocus.te.rosemary.util.get_id:
+          microfocus.te.rosemary.options.util.get_id:
             - json_object: '${datacenters}'
             - name: "${get_sp('folder_library')}"
         publish:
@@ -36,7 +36,7 @@ flow:
           - SUCCESS: get_lib_folders
     - get_dev_id:
         do:
-          Integrations.microfocus.te.rosemary.util.get_id:
+          microfocus.te.rosemary.options.util.get_id:
             - json_object: '${datacenters}'
             - name: "${get_sp('folder_development')}"
         publish:
@@ -46,7 +46,7 @@ flow:
           - SUCCESS: get_dev_folders
     - get_prod_folders:
         do:
-          microfocus.te.rosemary.util.advanced_search:
+          microfocus.te.rosemary.options.util.advanced_search:
             - props_type: Folder
             - props_pathset: 'name,parent'
             - props_root_obj_type: Datacenter
@@ -58,7 +58,7 @@ flow:
           - SUCCESS: get_classes_id
     - get_classes_id:
         do:
-          Integrations.microfocus.te.rosemary.util.get_id:
+          microfocus.te.rosemary.options.util.get_id:
             - json_object: '${prod_folders}'
             - name: Classes
         publish:
@@ -68,7 +68,7 @@ flow:
           - SUCCESS: get_classes
     - get_classes:
         do:
-          Integrations.microfocus.te.rosemary.util.get_children:
+          microfocus.te.rosemary.options.util.get_children:
             - json_object: '${prod_folders}'
             - parent_id: '${classes_id}'
             - parent_type: Folder
@@ -79,7 +79,7 @@ flow:
           - SUCCESS: write_file
     - get_lib_folders:
         do:
-          microfocus.te.rosemary.util.advanced_search:
+          microfocus.te.rosemary.options.util.advanced_search:
             - props_type: ResourcePool
             - props_pathset: 'name,parent'
             - props_root_obj_type: Datacenter
@@ -91,7 +91,7 @@ flow:
           - SUCCESS: get_resources_id
     - get_resources_id:
         do:
-          Integrations.microfocus.te.rosemary.util.get_id:
+          microfocus.te.rosemary.options.util.get_id:
             - json_object: '${lib_folders}'
             - name: Resources
         publish:
@@ -101,7 +101,7 @@ flow:
           - SUCCESS: get_libraries
     - get_libraries:
         do:
-          Integrations.microfocus.te.rosemary.util.get_children:
+          microfocus.te.rosemary.options.util.get_children:
             - json_object: '${lib_folders}'
             - parent_id: '${resources_id}'
             - parent_type: ResourcePool
@@ -112,7 +112,7 @@ flow:
           - SUCCESS: write_file_1
     - get_dev_folders:
         do:
-          microfocus.te.rosemary.util.advanced_search:
+          microfocus.te.rosemary.options.util.advanced_search:
             - props_type: ResourcePool
             - props_pathset: 'name,parent'
             - props_root_obj_type: Datacenter
@@ -134,7 +134,7 @@ flow:
           - FAILURE: on_failure
     - write_file:
         do:
-          Integrations.microfocus.te.rosemary.write_file:
+          microfocus.te.rosemary.options.write_file:
             - filename: classes.json
             - json: '${classes}'
         navigate:
@@ -142,7 +142,7 @@ flow:
           - SUCCESS: json_to_list
     - json_to_list:
         do:
-          Integrations.microfocus.te.rosemary.json_to_list:
+          microfocus.te.rosemary.options.util.json_to_list:
             - json: '${classes}'
             - property: morValue
         publish:
@@ -152,7 +152,7 @@ flow:
           - SUCCESS: write_pools
     - write_file_1:
         do:
-          Integrations.microfocus.te.rosemary.write_file:
+          microfocus.te.rosemary.options.write_file:
             - filename: libraries.json
             - json: '${libraries}'
         navigate:
@@ -160,7 +160,7 @@ flow:
           - SUCCESS: json_to_list_1
     - json_to_list_1:
         do:
-          Integrations.microfocus.te.rosemary.json_to_list:
+          microfocus.te.rosemary.options.util.json_to_list:
             - json: '${libraries}'
             - property: morValue
         publish:
@@ -172,7 +172,7 @@ flow:
         loop:
           for: library_id in library_ids
           do:
-            Integrations.microfocus.te.rosemary.write_vms:
+            microfocus.te.rosemary.options.write_vms:
               - parent_id: '${library_id[1:len(library_id)-1]}'
               - parent_type: ResourcePool
           break:
@@ -184,7 +184,7 @@ flow:
         loop:
           for: class_id in class_ids
           do:
-            Integrations.microfocus.te.rosemary.write_pools:
+            microfocus.te.rosemary.options.write_pools:
               - parent_id: '${class_id[1:len(class_id)-1]}'
               - parent_type: Folder
           break:
@@ -196,7 +196,7 @@ flow:
         loop:
           for: environment_id in environment_ids
           do:
-            Integrations.microfocus.te.rosemary.write_vms:
+            microfocus.te.rosemary.options.write_vms:
               - parent_id: '${environment_id[1:len(environment_id)-1]}'
               - parent_type: ResourcePool
           break:
@@ -206,7 +206,7 @@ flow:
           - SUCCESS: SUCCESS
     - write_file_2:
         do:
-          Integrations.microfocus.te.rosemary.write_file:
+          microfocus.te.rosemary.options.write_file:
             - filename: environments.json
             - json: '${envrironments}'
         navigate:
@@ -214,7 +214,7 @@ flow:
           - SUCCESS: json_to_list_2
     - json_to_list_2:
         do:
-          Integrations.microfocus.te.rosemary.json_to_list:
+          microfocus.te.rosemary.options.util.json_to_list:
             - json: '${envrironments}'
             - property: morValue
         publish:

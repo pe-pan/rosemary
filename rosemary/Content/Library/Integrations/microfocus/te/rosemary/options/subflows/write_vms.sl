@@ -1,4 +1,4 @@
-namespace: Integrations.microfocus.te.rosemary
+namespace: microfocus.te.rosemary.options.subflows
 flow:
   name: write_vms
   inputs:
@@ -7,7 +7,7 @@ flow:
   workflow:
     - list_vms:
         do:
-          Integrations.microfocus.te.rosemary.list_vms:
+          microfocus.te.rosemary.options.list_vms.subflows:
             - parent_id: '${parent_id}'
             - parent_type: '${parent_type}'
         publish:
@@ -17,7 +17,7 @@ flow:
           - FAILURE: on_failure
     - write_file:
         do:
-          Integrations.microfocus.te.rosemary.write_file:
+          microfocus.te.rosemary.options.write_file.subflows:
             - filename: '${parent_id}'
             - json: '${vms}'
         publish: []

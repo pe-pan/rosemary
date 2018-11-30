@@ -1,4 +1,4 @@
-namespace: Integrations.microfocus.te.rosemary
+namespace: microfocus.te.rosemary.options.subflows
 flow:
   name: write_pools
   inputs:
@@ -7,7 +7,7 @@ flow:
   workflow:
     - list_pools:
         do:
-          Integrations.microfocus.te.rosemary.list_pools:
+          microfocus.te.rosemary.options.list_pools.subflows:
             - parent_id: '${parent_id}'
             - parent_type: '${parent_type}'
         publish:
@@ -17,7 +17,7 @@ flow:
           - FAILURE: on_failure
     - write_file:
         do:
-          Integrations.microfocus.te.rosemary.write_file:
+          microfocus.te.rosemary.options.write_file.subflows:
             - filename: '${parent_id}'
             - json: '${pools}'
         publish: []
@@ -26,7 +26,7 @@ flow:
           - SUCCESS: json_to_list
     - json_to_list:
         do:
-          Integrations.microfocus.te.rosemary.json_to_list:
+          microfocus.te.rosemary.options.util.json_to_list:
             - json: '${pools}'
             - property: morValue
         publish:
@@ -38,7 +38,7 @@ flow:
         loop:
           for: pool_id in pool_ids
           do:
-            Integrations.microfocus.te.rosemary.write_vms:
+            microfocus.te.rosemary.options.write_vms.subflows:
               - parent_id: '${pool_id[1:len(pool_id)-1]}'
               - parent_type: ResourcePool
           break:

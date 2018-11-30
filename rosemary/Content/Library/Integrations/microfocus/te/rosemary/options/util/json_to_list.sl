@@ -1,4 +1,4 @@
-namespace: Integrations.microfocus.te.rosemary
+namespace: microfocus.te.rosemary.options.util
 flow:
   name: json_to_list
   inputs:
