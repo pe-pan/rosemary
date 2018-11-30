@@ -7,7 +7,7 @@ flow:
   workflow:
     - list_vms:
         do:
-          microfocus.te.rosemary.options.list_vms.subflows:
+          microfocus.te.rosemary.options.subflows.list_vms:
             - parent_id: '${parent_id}'
             - parent_type: '${parent_type}'
         publish:
@@ -17,7 +17,7 @@ flow:
           - FAILURE: on_failure
     - write_file:
         do:
-          microfocus.te.rosemary.options.write_file.subflows:
+          microfocus.te.rosemary.options.subflows.write_file:
             - filename: '${parent_id}'
             - json: '${vms}'
         publish: []
