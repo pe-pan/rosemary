@@ -1,6 +1,6 @@
 ########################################################################################################################
 #!!
-#! @input vms: List of VMs (ID, name) in this one environment
+#! @input parent_id: List of VMs (ID, name) in this one environment
 #! @input pattern_name: Pattern (VM name) that is to be searched
 #! @input operation: Which operation to run
 #!!#
@@ -9,7 +9,7 @@ namespace: Integrations.microfocus.te.rosemary.environment
 flow:
   name: run_operation
   inputs:
-    - vms: '[   {     "morValue": "vm-74200",     "name": "TO Delete - HCMDCA-VMDocker - 172.16.239.52_NET40_132_COPY"   },   {     "morValue": "vm-72679",     "name": "ESxi5_HCM_NET40_132"   },   {     "morValue": "vm-72663",     "name": "POCNG_WORKER-2018_08_ONE_NET40_132"   },   {     "morValue": "vm-72662",     "name": "POCNG_MASTER-2018_08_NET40_132"   },   {     "morValue": "vm-72571",     "name": "HCM-WIN-TOOLS-172.16.239.35_NET40_132"   },   {     "morValue": "vm-71014",     "name": "ps-server_NET40_132"   },   {     "morValue": "vm-71010",     "name": "mattermost-installed - 172.16.239.30_NET40_132"   },   {     "morValue": "vm-71009",     "name": "HCMDCA-VMDocker - 172.16.239.52_NET40_132"   },   {     "morValue": "vm-72664",     "name": "POCNG_WORKER-2018_08_TWO_NET40_132"   },   {     "morValue": "vm-71008",     "name": "HCM - DNS-DHCP - 172.16.239.9_NET40_132"   },   {     "morValue": "vm-74539",     "name": "Ubuntu Blank_NET40_132"   },   {     "morValue": "vm-71007",     "name": "AccessVM-HCM_2018_08_NET40_132"   } ]'
+    - parent_id: resgroup-41989
     - pattern_name: ps-server_NET41_13
     - operation:
         default: power_on
@@ -45,7 +45,7 @@ flow:
             - props_type: VirtualMachine
             - props_pathset: name
             - props_root_obj_type: ResourcePool
-            - props_root_obj: resgroup-41989
+            - props_root_obj: '${parent_id}'
         publish:
           - found_vms: '${return_result}'
           - filtered_json: '[]'
@@ -61,7 +61,6 @@ flow:
               - prefix: '${prefix}'
               - filtered_json: '${filtered_json}'
               - vm_id: '${vm_id[1:len(vm_id)-1]}'
-              - pattern: '${pattern}'
           break:
             - FAILURE
           publish:
@@ -142,6 +141,9 @@ flow:
         navigate:
           - SUCCESS: add_into_not_found_array
           - FAILURE: add_into_too_many_array
+  outputs:
+    - not_found_vms_out: '${not_found_vms}'
+    - found_too_many_times_vms_out: '${found_too_many_times_vms}'
   results:
     - FAILURE
     - SUCCESS
