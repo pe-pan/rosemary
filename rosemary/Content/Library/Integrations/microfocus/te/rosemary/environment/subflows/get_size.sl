@@ -2,12 +2,13 @@ namespace: Integrations.microfocus.te.rosemary.environment.subflows
 flow:
   name: get_size
   inputs:
-    - json: '[]'
+    - json: '[{"morValue":"vm-74200","name":"TO Delete - HCMDCA-VMDocker - 172.16.239.52_NET40_132_COPY"},{"morValue":"vm-72679","name":"ESxi5_HCM_NET40_132"},{"morValue":"vm-72663","name":"POCNG_WORKER-2018_08_ONE_NET40_132"},{"morValue":"vm-72662","name":"POCNG_MASTER-2018_08_NET40_132"},{"morValue":"vm-72571","name":"HCM-WIN-TOOLS-172.16.239.35_NET40_132"},{"morValue":"vm-71014","name":"ps-server_NET40_132"},{"morValue":"vm-71010","name":"mattermost-installed - 172.16.239.30_NET40_132"},{"morValue":"vm-71009","name":"HCMDCA-VMDocker - 172.16.239.52_NET40_132"},{"morValue":"vm-72664","name":"POCNG_WORKER-2018_08_TWO_NET40_132"},{"morValue":"vm-71008","name":"HCM - DNS-DHCP - 172.16.239.9_NET40_132"},{"morValue":"vm-74539","name":"Ubuntu Blank_NET40_132"},{"morValue":"vm-71007","name":"AccessVM-HCM_2018_08_NET40_132"}]'
   workflow:
     - sleep:
         do:
           io.cloudslang.base.utils.sleep:
             - seconds: '0'
+        publish: []
         navigate:
           - SUCCESS: SUCCESS
           - FAILURE: how_many_results
@@ -15,10 +16,9 @@ flow:
         do:
           io.cloudslang.base.json.json_path_query:
             - json_object: '${json}'
-            - json_path: $.length
+            - json_path: $.length()
         publish:
-          - found_vms: '${return_result}'
-          - return_result
+          - size: '${return_result}'
         navigate:
           - SUCCESS: SUCCESS
           - FAILURE: on_failure
@@ -34,7 +34,7 @@ extensions:
         x: 89
         y: 95
         navigate:
-          f2437825-7c75-d7cc-2c83-7221889fa393:
+          a9cc862e-d04c-cb48-3a0b-c68db7439d98:
             targetId: b28e8f30-3983-bfef-56b5-23b7acf8bd7e
             port: SUCCESS
       how_many_results:

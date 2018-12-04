@@ -27,7 +27,7 @@ flow:
             - x_509_hostname_verifier: allow_all
         navigate:
           - SUCCESS: SUCCESS
-          - FAILURE: on_failure
+          - FAILURE: SUCCESS
     - is_power_off:
         do:
           io.cloudslang.base.strings.string_equals:
@@ -50,13 +50,16 @@ flow:
             - x_509_hostname_verifier: allow_all
         navigate:
           - SUCCESS: SUCCESS
-          - FAILURE: on_failure
+          - FAILURE: SUCCESS
   results:
     - FAILURE
     - SUCCESS
 extensions:
   graph:
     steps:
+      is_power_on:
+        x: 172
+        y: 53
       power_on_vm:
         x: 403
         y: 69
@@ -64,9 +67,9 @@ extensions:
           0f357681-cf90-8a3f-6493-448c012c2c2f:
             targetId: 885d1d8b-81a6-d3f6-941b-a01732019366
             port: SUCCESS
-      is_power_on:
-        x: 172
-        y: 53
+          89b7ec62-42a5-9c58-96e9-cfbc0337f8d7:
+            targetId: 885d1d8b-81a6-d3f6-941b-a01732019366
+            port: FAILURE
       is_power_off:
         x: 174
         y: 235
@@ -77,6 +80,9 @@ extensions:
           295a663f-fcfe-9837-e996-7dc03e2a1558:
             targetId: 885d1d8b-81a6-d3f6-941b-a01732019366
             port: SUCCESS
+          a72219e4-2f1c-1c5a-63b2-b411247c4315:
+            targetId: 885d1d8b-81a6-d3f6-941b-a01732019366
+            port: FAILURE
     results:
       SUCCESS:
         885d1d8b-81a6-d3f6-941b-a01732019366:

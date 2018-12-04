@@ -31,13 +31,11 @@ flow:
         do:
           io.cloudslang.base.json.json_path_query:
             - json_object: '${found_vms}'
-            - json_path: "$[?(@.morValue =~ /.*74200/i)]['name']['morValue']"
+            - json_path: "${\"$[?(@.name =~ /\"+prefix+\".*/)].['name','morValue']\"}"
         publish:
-          - list: '${return_result}'
-          - return_code
-          - exception
+          - filtered_json: '${return_result}'
         navigate:
-          - SUCCESS: SUCCESS
+          - SUCCESS: get_size
           - FAILURE: on_failure
     - advanced_search:
         do:
@@ -50,8 +48,8 @@ flow:
           - found_vms: '${return_result}'
           - filtered_json: '[]'
         navigate:
-          - FAILURE: json_path_query
-          - SUCCESS: json_to_list
+          - FAILURE: json_to_list
+          - SUCCESS: json_path_query
     - filter_json:
         loop:
           for: vm_id in vms_list
@@ -161,12 +159,8 @@ extensions:
             targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
             port: SUCCESS
       json_path_query:
-        x: 343
-        y: 15
-        navigate:
-          90abc8fe-c961-bc99-e2ab-a36f25828ee1:
-            targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
-            port: SUCCESS
+        x: 345
+        y: 17
       only_one_vm_found:
         x: 434
         y: 378
@@ -200,8 +194,8 @@ extensions:
         x: 526
         y: 428
       regex_replace:
-        x: 16
-        y: 75
+        x: 17
+        y: 77
     results:
       SUCCESS:
         69f2b956-4d74-a7d4-84df-1e93b4d7fe69:

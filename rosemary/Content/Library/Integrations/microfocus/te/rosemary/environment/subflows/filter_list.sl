@@ -4,7 +4,8 @@ flow:
   inputs:
     - json
     - vm_id
-    - vm_names: ''
+    - vm_names:
+        required: false
   workflow:
     - json_path_query:
         do:
@@ -18,15 +19,14 @@ flow:
           - FAILURE: on_failure
     - add_element:
         do:
-          io.cloudslang.base.lists.add_element:
+          Integrations.microfocus.te.rosemary.options.util.add_element:
             - list: '${vm_names}'
             - element: '${vm_name}'
-            - delimiter: ','
         publish:
-          - vm_names: '${return_result}'
+          - vm_names: '${result_list}'
         navigate:
-          - SUCCESS: SUCCESS
           - FAILURE: on_failure
+          - SUCCESS: SUCCESS
   outputs:
     - names_list: '${vm_names}'
   results:
@@ -39,10 +39,10 @@ extensions:
         x: 114
         y: 79
       add_element:
-        x: 281
-        y: 69
+        x: 273
+        y: 89
         navigate:
-          dbf48bab-efe8-a1d5-e3fd-349b71f7a023:
+          042dedb7-ca2f-943d-bd98-bc5b509f5b85:
             targetId: 8c55d923-34fa-757e-ef66-c5388b3ed054
             port: SUCCESS
     results:
