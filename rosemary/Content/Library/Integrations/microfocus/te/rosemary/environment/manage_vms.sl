@@ -10,10 +10,10 @@ namespace: Integrations.microfocus.te.rosemary.environment
 flow:
   name: manage_vms
   inputs:
-    - parent_id: resgroup-41989
-    - vms_off: 'vm-72571,vm-71009'
-    - vms_on: 'vm-72571,vm-71009'
-    - environments: 'resgroup-41989,resgroup-74997'
+    - parent_id: resgroup-77479
+    - vms_off: vm-82169
+    - vms_on: vm-78152
+    - environments: 'resgroup-76119,resgroup-82685,resgroup-77417,resgroup-82683,resgroup-82681,resgroup-76099,resgroup-76096,resgroup-76116,resgroup-77422,resgroup-76118,resgroup-76109,resgroup-76113,resgroup-76103,resgroup-76104,resgroup-82682,resgroup-77479,resgroup-76114,resgroup-76115,resgroup-76102,resgroup-76110,resgroup-82684,resgroup-82680,resgroup-76100,resgroup-77418,resgroup-76107,resgroup-76117,resgroup-76097,resgroup-76112,resgroup-76101,resgroup-76105,resgroup-76111,resgroup-77421,resgroup-77419,resgroup-76106,resgroup-82679,resgroup-77420'
   workflow:
     - manage_vm:
         loop:
