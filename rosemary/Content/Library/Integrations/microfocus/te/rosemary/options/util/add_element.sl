@@ -13,14 +13,12 @@ flow:
         do:
           io.cloudslang.base.utils.sleep:
             - seconds: '0'
-            - list: null
-        publish:
-          - list
+        publish: []
         navigate:
           - SUCCESS: SUCCESS
           - FAILURE: on_failure
   outputs:
-    - result_list: '${list}'
+    - result_list: '${list+delimiter+element if list else element}'
   results:
     - FAILURE
     - SUCCESS
