@@ -123,49 +123,49 @@ extensions:
   graph:
     steps:
       advanced_search:
-        x: 144
-        y: 78
+        x: 13
+        y: 241
       add_into_too_many_array:
-        x: 135
-        y: 326
+        x: 530
+        y: 241
         navigate:
           6ed5110c-947f-d9e9-56ab-cd68fcf45854:
             targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
             port: SUCCESS
       json_path_query:
-        x: 323
-        y: 54
+        x: 194
+        y: 64
       only_one_vm_found:
-        x: 434
-        y: 378
+        x: 385
+        y: 53
       perform_operation:
-        x: 669
-        y: 398
+        x: 745
+        y: 72
         navigate:
           46fc7a5a-55f3-47ff-c820-d306f1ca4087:
             targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
             port: SUCCESS
       get_size:
-        x: 500
-        y: 38
+        x: 191
+        y: 239
       zero_found:
-        x: 322
-        y: 294
+        x: 387
+        y: 317
       add_into_not_found_array:
-        x: 507
-        y: 255
+        x: 532
+        y: 405
         navigate:
           bf675100-3ffb-04d6-4086-a50141f34352:
             targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
             port: SUCCESS
       get_vm_id:
-        x: 526
-        y: 428
+        x: 527
+        y: 71
       regex_replace:
         x: 17
         y: 77
     results:
       SUCCESS:
         69f2b956-4d74-a7d4-84df-1e93b4d7fe69:
-          x: 679
-          y: 97
+          x: 762
+          y: 325
