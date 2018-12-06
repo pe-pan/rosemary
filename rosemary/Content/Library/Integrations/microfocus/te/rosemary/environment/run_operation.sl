@@ -48,34 +48,8 @@ flow:
           - found_vms: '${return_result}'
           - filtered_json: '[]'
         navigate:
-          - FAILURE: json_to_list
+          - FAILURE: on_failure
           - SUCCESS: json_path_query
-    - filter_json:
-        loop:
-          for: vm_id in vms_list
-          do:
-            Integrations.microfocus.te.rosemary.environment.subflows.filter_json:
-              - json: '${found_vms}'
-              - prefix: '${prefix}'
-              - filtered_json: '${filtered_json}'
-              - vm_id: '${vm_id[1:len(vm_id)-1]}'
-          break:
-            - FAILURE
-          publish:
-            - filtered_json: '${result_json}'
-        navigate:
-          - FAILURE: on_failure
-          - SUCCESS: get_size
-    - json_to_list:
-        do:
-          microfocus.te.rosemary.options.util.json_to_list:
-            - json: '${found_vms}'
-            - property: morValue
-        publish:
-          - vms_list: '${list}'
-        navigate:
-          - FAILURE: on_failure
-          - SUCCESS: filter_json
     - only_one_vm_found:
         do:
           io.cloudslang.base.strings.string_equals:
@@ -149,8 +123,8 @@ extensions:
   graph:
     steps:
       advanced_search:
-        x: 139
-        y: 54
+        x: 144
+        y: 78
       add_into_too_many_array:
         x: 135
         y: 326
@@ -159,8 +133,8 @@ extensions:
             targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
             port: SUCCESS
       json_path_query:
-        x: 345
-        y: 17
+        x: 323
+        y: 54
       only_one_vm_found:
         x: 434
         y: 378
@@ -172,14 +146,11 @@ extensions:
             targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
             port: SUCCESS
       get_size:
-        x: 365
-        y: 127
+        x: 500
+        y: 38
       zero_found:
         x: 322
         y: 294
-      json_to_list:
-        x: 39
-        y: 229
       add_into_not_found_array:
         x: 507
         y: 255
@@ -187,9 +158,6 @@ extensions:
           bf675100-3ffb-04d6-4086-a50141f34352:
             targetId: 69f2b956-4d74-a7d4-84df-1e93b4d7fe69
             port: SUCCESS
-      filter_json:
-        x: 195
-        y: 154
       get_vm_id:
         x: 526
         y: 428
