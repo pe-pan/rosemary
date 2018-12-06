@@ -30,7 +30,7 @@ flow:
           for: vm_name in vm_names
           do:
             Integrations.microfocus.te.rosemary.environment.manage_vm:
-              - pattern_name: '${vm_name}'
+              - vm_name: '${vm_name}'
               - operation: power_off
               - environments: '${environments}'
           break:
@@ -44,7 +44,7 @@ flow:
           for: vm_name in vm_names
           do:
             Integrations.microfocus.te.rosemary.environment.manage_vm:
-              - pattern_name: '${vm_name}'
+              - vm_name: '${vm_name}'
               - operation: power_on
               - environments: '${environments}'
           break:
