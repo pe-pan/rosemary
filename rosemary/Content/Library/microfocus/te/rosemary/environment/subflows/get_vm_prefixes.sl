@@ -40,7 +40,7 @@ flow:
           - FAILURE: on_failure
           - SUCCESS: SUCCESS
   outputs:
-    - vm_names: '${prefix_acc}'
+    - prefixes: '${prefix_acc}'
   results:
     - FAILURE
     - SUCCESS

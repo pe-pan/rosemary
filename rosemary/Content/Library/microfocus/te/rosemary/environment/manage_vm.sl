@@ -6,7 +6,7 @@ namespace: microfocus.te.rosemary.environment
 flow:
   name: manage_vm
   inputs:
-    - vm_name
+    - prefix
     - operation
     - environments
   workflow:
@@ -16,7 +16,7 @@ flow:
           do:
             microfocus.te.rosemary.environment.run_operation:
               - parent_id: '${environment_id}'
-              - pattern_name: '${vm_name}'
+              - pattern_name: '${prefix}'
               - operation
         navigate:
           - FAILURE: on_failure

@@ -1,7 +1,7 @@
 ########################################################################################################################
 #!!
 #! @input parent_id: List of VMs (ID, name) in this one environment
-#! @input pattern_name: Pattern (VM name) that is to be searched
+#! @input prefix: Pattern (VM name) that is to be searched
 #! @input operation: Which operation to run
 #!!#
 ########################################################################################################################
@@ -10,7 +10,7 @@ flow:
   name: run_operation
   inputs:
     - parent_id: resgroup-41989
-    - pattern_name: ps-server_NET41_13
+    - prefix: ps-server_NET41_13
     - operation:
         default: power_on
         required: false
@@ -114,7 +114,7 @@ extensions:
     steps:
       advanced_search:
         x: 29
-        y: 72
+        y: 73
       add_into_too_many_array:
         x: 530
         y: 241

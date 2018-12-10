@@ -21,16 +21,17 @@ flow:
             - parent_id: '${parent_id}'
             - vm_ids: '${vms_off}'
         publish:
-          - vm_names
+          - prefixes
         navigate:
           - FAILURE: on_failure
           - SUCCESS: power_off_vms
     - power_off_vms:
         parallel_loop:
-          for: vm_name in vm_names
+          for: prefix in prefixes
           do:
             microfocus.te.rosemary.environment.manage_vm:
-              - vm_name: '${vm_name}'
+              - prefix: '${prefix}'
+              - vm_name: '${prefix}'
               - operation: power_off
               - environments: '${environments}'
         publish: []
@@ -43,16 +44,17 @@ flow:
             - parent_id: '${parent_id}'
             - vm_ids: '${vms_on}'
         publish:
-          - vm_names
+          - prefixes
         navigate:
           - FAILURE: on_failure
           - SUCCESS: power_on_vms
     - power_on_vms:
         parallel_loop:
-          for: vm_name in vm_names
+          for: prefix in prefixes
           do:
             microfocus.te.rosemary.environment.manage_vm:
-              - vm_name: '${vm_name}'
+              - prefix: '${prefix}'
+              - vm_name: '${prefix}'
               - operation: power_on
               - environments: '${environments}'
         publish: []
@@ -75,7 +77,7 @@ extensions:
         x: 127
         y: 289
       power_on_vms:
-        x: 321
+        x: 324
         y: 287
         navigate:
           38992a50-23d3-131c-2cbd-eacc93dfe85c:
