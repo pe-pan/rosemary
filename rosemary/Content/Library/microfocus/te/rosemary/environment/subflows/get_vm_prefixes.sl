@@ -6,7 +6,7 @@
 ########################################################################################################################
 namespace: microfocus.te.rosemary.environment.subflows
 flow:
-  name: get_vm_names
+  name: get_vm_prefixes
   inputs:
     - parent_id
     - vm_ids
