@@ -2,7 +2,7 @@ namespace: Integrations.microfocus.te.rosemary.environment.subflows
 flow:
   name: get_size
   inputs:
-    - json: '[{"morValue":"vm-74200","name":"TO Delete - HCMDCA-VMDocker - 172.16.239.52_NET40_132_COPY"},{"morValue":"vm-72679","name":"ESxi5_HCM_NET40_132"},{"morValue":"vm-72663","name":"POCNG_WORKER-2018_08_ONE_NET40_132"},{"morValue":"vm-72662","name":"POCNG_MASTER-2018_08_NET40_132"},{"morValue":"vm-72571","name":"HCM-WIN-TOOLS-172.16.239.35_NET40_132"},{"morValue":"vm-71014","name":"ps-server_NET40_132"},{"morValue":"vm-71010","name":"mattermost-installed - 172.16.239.30_NET40_132"},{"morValue":"vm-71009","name":"HCMDCA-VMDocker - 172.16.239.52_NET40_132"},{"morValue":"vm-72664","name":"POCNG_WORKER-2018_08_TWO_NET40_132"},{"morValue":"vm-71008","name":"HCM - DNS-DHCP - 172.16.239.9_NET40_132"},{"morValue":"vm-74539","name":"Ubuntu Blank_NET40_132"},{"morValue":"vm-71007","name":"AccessVM-HCM_2018_08_NET40_132"}]'
+    - json
   workflow:
     - sleep:
         do:
