@@ -11,7 +11,7 @@ flow:
             - json_object: '${json}'
             - json_path: "${'$[*].'+property}"
         publish:
-          - list: '${return_result[1:len(return_result)-1]}'
+          - list: '${return_result[1:-1]}'
         navigate:
           - SUCCESS: SUCCESS
           - FAILURE: on_failure

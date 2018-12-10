@@ -173,7 +173,7 @@ flow:
           for: library_id in library_ids
           do:
             microfocus.te.rosemary.options.subflows.write_vms:
-              - parent_id: '${library_id[1:len(library_id)-1]}'
+              - parent_id: '${library_id[1:-1]}'
               - parent_type: ResourcePool
           break:
             - FAILURE
@@ -185,7 +185,7 @@ flow:
           for: class_id in class_ids
           do:
             microfocus.te.rosemary.options.subflows.write_pools:
-              - parent_id: '${class_id[1:len(class_id)-1]}'
+              - parent_id: '${class_id[1:-1]}'
               - parent_type: Folder
           break:
             - FAILURE
@@ -197,7 +197,7 @@ flow:
           for: environment_id in environment_ids
           do:
             microfocus.te.rosemary.options.subflows.write_vms:
-              - parent_id: '${environment_id[1:len(environment_id)-1]}'
+              - parent_id: '${environment_id[1:-1]}'
               - parent_type: ResourcePool
           break:
             - FAILURE

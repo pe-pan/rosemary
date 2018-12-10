@@ -72,7 +72,7 @@ flow:
             - json_object: '${filtered_json}'
             - json_path: '$[0].morValue'
         publish:
-          - vm_id: '${return_result[1:len(return_result)-1]}'
+          - vm_id: '${return_result[1:-1]}'
         navigate:
           - SUCCESS: perform_operation
           - FAILURE: on_failure

@@ -39,7 +39,7 @@ flow:
           for: pool_id in pool_ids
           do:
             microfocus.te.rosemary.options.subflows.write_vms:
-              - parent_id: '${pool_id[1:len(pool_id)-1]}'
+              - parent_id: '${pool_id[1:-1]}'
               - parent_type: ResourcePool
           break:
             - FAILURE

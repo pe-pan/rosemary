@@ -13,7 +13,7 @@ flow:
             - json_object: '${json}'
             - json_path: "${'$[?(@.morValue == \\''+vm_id+'\\')].name'}"
         publish:
-          - vm_name: '${return_result[2:len(return_result)-2]}'
+          - vm_name: '${return_result[2:-2]}'
         navigate:
           - SUCCESS: add_element
           - FAILURE: on_failure

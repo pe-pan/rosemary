@@ -11,7 +11,7 @@ flow:
             - json_object: '${json_object}'
             - json_path: "${'$[?(@.name==\\''+name+'\\')].morValue'}"
         publish:
-          - id: '${return_result[2:len(return_result)-2]}'
+          - id: '${return_result[2:-2]}'
         navigate:
           - SUCCESS: SUCCESS
           - FAILURE: on_failure
