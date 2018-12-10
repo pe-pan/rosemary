@@ -17,26 +17,6 @@ flow:
     - not_found_vms: '[]'
     - found_too_many_times_vms: '[]'
   workflow:
-    - regex_replace:
-        do:
-          io.cloudslang.base.strings.regex_replace:
-            - regex: "(^.*)(NET\\d+_\\d+)$"
-            - text: '${pattern_name}'
-            - replacement: "\\1"
-        publish:
-          - prefix: '${result_text}'
-        navigate:
-          - SUCCESS: advanced_search
-    - json_path_query:
-        do:
-          io.cloudslang.base.json.json_path_query:
-            - json_object: '${found_vms}'
-            - json_path: "${\"$[?(@.name =~ /\"+prefix+\".*/)].['name','morValue']\"}"
-        publish:
-          - filtered_json: '${return_result}'
-        navigate:
-          - SUCCESS: get_size
-          - FAILURE: on_failure
     - advanced_search:
         do:
           microfocus.te.rosemary.options.util.advanced_search:
@@ -50,6 +30,16 @@ flow:
         navigate:
           - FAILURE: on_failure
           - SUCCESS: json_path_query
+    - json_path_query:
+        do:
+          io.cloudslang.base.json.json_path_query:
+            - json_object: '${found_vms}'
+            - json_path: "${\"$[?(@.name =~ /\"+prefix+\".*/)].['name','morValue']\"}"
+        publish:
+          - filtered_json: '${return_result}'
+        navigate:
+          - SUCCESS: get_size
+          - FAILURE: on_failure
     - only_one_vm_found:
         do:
           io.cloudslang.base.strings.string_equals:
@@ -123,8 +113,8 @@ extensions:
   graph:
     steps:
       advanced_search:
-        x: 13
-        y: 241
+        x: 29
+        y: 72
       add_into_too_many_array:
         x: 530
         y: 241
@@ -161,9 +151,6 @@ extensions:
       get_vm_id:
         x: 527
         y: 71
-      regex_replace:
-        x: 17
-        y: 77
     results:
       SUCCESS:
         69f2b956-4d74-a7d4-84df-1e93b4d7fe69:

@@ -1,7 +1,7 @@
 ########################################################################################################################
 #!!
 #! @input parent_id: ID of parent environment where the VMs are taken from
-#! @input vm_ids: List of VM IDs to power off
+#! @input vm_ids: List of VM IDs to run the operations on
 #!!#
 ########################################################################################################################
 namespace: Integrations.microfocus.te.rosemary.environment.subflows
@@ -20,7 +20,7 @@ flow:
             - props_root_obj: '${parent_id}'
         publish:
           - json: '${return_result}'
-          - vm_names: ''
+          - prefix_acc: ''
         navigate:
           - FAILURE: on_failure
           - SUCCESS: filter_list
@@ -31,16 +31,16 @@ flow:
             Integrations.microfocus.te.rosemary.environment.subflows.filter_list:
               - json: '${json}'
               - vm_id: '${vm_id}'
-              - vm_names: '${vm_names}'
+              - prefix_acc: '${prefix_acc}'
           break:
             - FAILURE
           publish:
-            - vm_names: '${names_list}'
+            - prefix_acc: '${prefixes}'
         navigate:
           - FAILURE: on_failure
           - SUCCESS: SUCCESS
   outputs:
-    - vm_names: '${vm_names}'
+    - vm_names: '${prefix_acc}'
   results:
     - FAILURE
     - SUCCESS
@@ -52,7 +52,7 @@ extensions:
         y: 104
       filter_list:
         x: 347
-        y: 107
+        y: 106
         navigate:
           4c87a52f-69ac-bec0-e4c6-bcad60835df0:
             targetId: f34e9c64-53aa-eccf-d3a8-b01516b4ea20

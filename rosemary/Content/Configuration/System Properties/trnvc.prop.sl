@@ -1,9 +1,9 @@
 namespace: ''
 properties:
   - host: trnvc.eswdc.net
-  - user: "eswdc\\panuska"
+  - user: ''
   - password:
-      value: 'Police123!'
+      value: ''
       sensitive: true
   - folder_development: Development
   - folder_library: Library
