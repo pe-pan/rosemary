@@ -4,7 +4,7 @@ flow:
   workflow:
     - filter_list:
         do:
-          microfocus.te.rosemary.environment.subflows.filter_list:
+          microfocus.te.rosemary.util.filter_list:
             - json: >-
                 [
                   {

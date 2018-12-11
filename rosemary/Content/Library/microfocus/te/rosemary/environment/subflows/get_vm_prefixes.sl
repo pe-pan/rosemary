@@ -28,7 +28,7 @@ flow:
         loop:
           for: vm_id in vm_ids
           do:
-            microfocus.te.rosemary.environment.subflows.filter_list:
+            microfocus.te.rosemary.util.filter_list:
               - json: '${json}'
               - vm_id: '${vm_id}'
               - prefix_acc: '${prefix_acc}'

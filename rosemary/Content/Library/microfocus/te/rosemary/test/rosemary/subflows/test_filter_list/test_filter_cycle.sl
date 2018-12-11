@@ -10,7 +10,7 @@ flow:
         loop:
           for: "vm_id in 'vm-74200,vm-72679,vm-72663'"
           do:
-            microfocus.te.rosemary.environment.subflows.filter_list:
+            microfocus.te.rosemary.util.filter_list:
               - json: >-
                   [
                     {

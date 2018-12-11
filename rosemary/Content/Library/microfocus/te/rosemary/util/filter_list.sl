@@ -9,7 +9,7 @@
 #! @output prefixes: Prefixes of names of VMs in the folder
 #!!#
 ########################################################################################################################
-namespace: microfocus.te.rosemary.environment.subflows
+namespace: microfocus.te.rosemary.util
 flow:
   name: filter_list
   inputs:

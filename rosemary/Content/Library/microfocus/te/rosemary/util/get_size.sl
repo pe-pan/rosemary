@@ -1,4 +1,4 @@
-namespace: microfocus.te.rosemary.environment.subflows
+namespace: microfocus.te.rosemary.util
 flow:
   name: get_size
   inputs:

@@ -88,7 +88,7 @@ flow:
           - FAILURE: on_failure
     - get_size:
         do:
-          microfocus.te.rosemary.environment.subflows.get_size:
+          microfocus.te.rosemary.util.get_size:
             - json: '${filtered_json}'
         publish:
           - size

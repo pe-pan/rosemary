@@ -4,7 +4,7 @@ flow:
   workflow:
     - get_size:
         do:
-          microfocus.te.rosemary.environment.subflows.get_size:
+          microfocus.te.rosemary.util.get_size:
             - json: '[]'
         publish:
           - size
