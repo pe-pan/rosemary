@@ -9,7 +9,7 @@ flow:
   workflow:
     - advanced_search:
         do:
-          microfocus.te.rosemary.options.util.advanced_search:
+          microfocus.te.rosemary.util.advanced_search:
             - props_type: VirtualMachine
             - props_pathset: name
             - props_root_obj_type: '${parent_type}'

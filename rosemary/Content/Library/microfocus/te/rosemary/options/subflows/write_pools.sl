@@ -26,7 +26,7 @@ flow:
           - SUCCESS: json_to_list
     - json_to_list:
         do:
-          microfocus.te.rosemary.options.util.json_to_list:
+          microfocus.te.rosemary.util.json_to_list:
             - json: '${pools}'
             - property: morValue
         publish:

@@ -4,7 +4,7 @@ flow:
   workflow:
     - add_element:
         do:
-          microfocus.te.rosemary.options.util.add_element:
+          microfocus.te.rosemary.util.add_element:
             - list: original_element
             - element: element
         publish:

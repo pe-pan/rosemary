@@ -10,7 +10,7 @@ flow:
         loop:
           for: 'element in range(1,6)'
           do:
-            microfocus.te.rosemary.options.util.add_element:
+            microfocus.te.rosemary.util.add_element:
               - list: '${list}'
               - element: '${str(element)}'
               - delimiter: /

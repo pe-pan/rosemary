@@ -30,7 +30,7 @@ flow:
           - FAILURE: on_failure
     - add_element:
         do:
-          microfocus.te.rosemary.options.util.add_element:
+          microfocus.te.rosemary.util.add_element:
             - list: '${prefix_acc}'
             - element: '${prefix}'
         publish:
