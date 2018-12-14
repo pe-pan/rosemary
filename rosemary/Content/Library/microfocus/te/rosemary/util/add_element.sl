@@ -24,7 +24,6 @@
 #! @output result_list: The new list or an error message otherwise
 #!
 #! @result SUCCESS: The new list was retrieved with success
-#! @result FAILURE: Otherwise
 #!!#
 ########################################################################################################################
 namespace: microfocus.te.rosemary.util
@@ -44,4 +43,5 @@ operation:
   outputs:
     - result_list: ${list}
   results:
-    - SUCCESS
+    - SUCCESS: ${"true"}
+    - FAILURE
