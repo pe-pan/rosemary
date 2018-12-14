@@ -36,7 +36,6 @@ flow:
         publish:
           - prefixes: '${result_list}'
         navigate:
-          - FAILURE: on_failure
           - SUCCESS: SUCCESS
     - regex_replace:
         do:

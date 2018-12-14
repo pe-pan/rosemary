@@ -43,5 +43,4 @@ operation:
   outputs:
     - result_list: ${list}
   results:
-    - SUCCESS: ${"true"}
-    - FAILURE
+    - SUCCESS

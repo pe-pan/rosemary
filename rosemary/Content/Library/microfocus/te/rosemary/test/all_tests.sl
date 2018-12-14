@@ -12,7 +12,6 @@ flow:
         do:
           microfocus.te.rosemary.test.rosemary.util.test_add_element.add_element_all: []
         navigate:
-          - FAILURE: on_failure
           - SUCCESS: test_filter_all
     - test_filter_all:
         do:

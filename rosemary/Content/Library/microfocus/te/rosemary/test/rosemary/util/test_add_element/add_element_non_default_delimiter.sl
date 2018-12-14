@@ -11,7 +11,6 @@ flow:
         publish:
           - result_list
         navigate:
-          - FAILURE: on_failure
           - SUCCESS: string_equals
     - string_equals:
         do:
