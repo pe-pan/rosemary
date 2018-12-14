@@ -14,8 +14,7 @@ flow:
               - list: '${list}'
               - element: '${str(element)}'
               - delimiter: /
-          break:
-            - FAILURE
+          break: []
           publish:
             - list: '${result_list}'
         navigate:
